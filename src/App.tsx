@@ -9,11 +9,9 @@ function App() {
   const { isDark } = useThemeStore()
 
   return (
-    <ConfigProvider theme={{algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm}}>
+    <ConfigProvider theme={{ algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm }}>
       <Layout>
-        <Layout.Header>
-          <Header />
-        </Layout.Header>
+        <Header />
         <Layout.Content style={{ padding: 24 }}>
           <Routes>
             <Route path="/" element={<NewApplicationPage />} />
