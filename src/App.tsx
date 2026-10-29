@@ -12,7 +12,7 @@ function App() {
     <ConfigProvider theme={{ algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm }}>
       <Layout>
         <Header />
-        <Layout.Content style={{ padding: 24 }}>
+        <Layout.Content style={{ padding: 24, minHeight: '91.2vh'}}>
           <Routes>
             <Route path="/" element={<NewApplicationPage />} />
             <Route path="/panel" element={<PanelPage />} />
