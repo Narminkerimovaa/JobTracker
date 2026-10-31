@@ -1,5 +1,5 @@
 import { Typography, Card } from "antd"
-import Container from "../components/ApplicationForm"
+import ApplicationForm from "../components/ApplicationForm"
 
 function NewApplicationPage() {
   return (
@@ -9,7 +9,7 @@ function NewApplicationPage() {
       </Typography.Title>
       <Typography.Text type="secondary" style={{ display: 'block', marginBottom: 24 }}>Göndərdiyin müraciəti qeyd et, sonra Paneldə izlə.</Typography.Text>
       <Card>
-        <Container />
+        <ApplicationForm onSubmit={(app) => console.log(app)}  />
       </Card>
     </div>
   )

@@ -1,14 +1,34 @@
 import { Form, Col, Row, Input, Flex, Button, Select, theme, DatePicker } from "antd"
 import { statusOptions } from "../constants/status";
 const { TextArea } = Input;
+import type { Dayjs } from "dayjs";
+import type { Application, Status } from "../types/application";
+import dayjs from "dayjs";
 
-function ApplicationForm() {
+interface FormValues {
+    company: string,
+    position: string,
+    date: Dayjs,
+    status: Status,
+    link?: string,
+    note?: string
+}
+
+interface Props{
+    onSubmit: (app: Omit<Application, 'id'>)=>void, 
+}
+
+function ApplicationForm({ onSubmit }: Props) {
     const { token } = theme.useToken()
+
+    function handleFinish(values:FormValues){
+        onSubmit({ ...values, date: values.date.format('YYYY-MM-DD')})
+    }
     return (
-        <Form initialValues={{ status: 'sent' }} requiredMark={(label, { required }) => (
+        <Form<FormValues> onFinish={handleFinish} initialValues={{ status: 'sent', date: dayjs() }} requiredMark={(label, { required }) => (
             <>
                 {label}
-                {required && <span style={{ color: token.colorError, marginLeft:5 }}>*</span>}
+                {required && <span style={{ color: token.colorError, marginLeft: 5 }}>*</span>}
             </>
         )} layout="vertical">
             <Row gutter={16}>
@@ -26,7 +46,7 @@ function ApplicationForm() {
             <Row gutter={16}>
                 <Col xs={24} sm={12}>
                     <Form.Item label="Müraciət tarixi" name="date">
-                        <DatePicker format={"DD.MM.YYYY"} style={{width:'100%'}} />
+                        <DatePicker allowClear={false} format={"DD.MM.YYYY"} style={{ width: '100%' }} />
                     </Form.Item>
                 </Col>
                 <Col xs={24} sm={12}>
@@ -48,7 +68,7 @@ function ApplicationForm() {
                 <Button type="default">
                     Təmizlə
                 </Button>
-                <Button type="primary">
+                <Button type="primary" htmlType="submit">
                     Əlavə et
                 </Button>
             </Flex>
