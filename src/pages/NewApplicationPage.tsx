@@ -1,7 +1,10 @@
 import { Typography, Card } from "antd"
 import ApplicationForm from "../components/ApplicationForm"
+import { useApplicationStore } from "../store/useApplicationStore"
 
 function NewApplicationPage() {
+  const addApplication = useApplicationStore((state) => state.addApplication)
+
   return (
     <div style={{ maxWidth: 680, margin: '0 auto' }}>
       <Typography.Title level={3} style={{ margin: 0 }}>
@@ -9,7 +12,7 @@ function NewApplicationPage() {
       </Typography.Title>
       <Typography.Text type="secondary" style={{ display: 'block', marginBottom: 24 }}>Göndərdiyin müraciəti qeyd et, sonra Paneldə izlə.</Typography.Text>
       <Card>
-        <ApplicationForm onSubmit={(app) => console.log(app)}  />
+        <ApplicationForm onSubmit={addApplication} />
       </Card>
     </div>
   )
