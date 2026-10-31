@@ -20,12 +20,14 @@ interface Props{
 
 function ApplicationForm({ onSubmit }: Props) {
     const { token } = theme.useToken()
+    const [form] = Form.useForm<FormValues>()
 
     function handleFinish(values:FormValues){
         onSubmit({ ...values, date: values.date.format('YYYY-MM-DD')})
+        form.resetFields()
     }
     return (
-        <Form<FormValues> onFinish={handleFinish} initialValues={{ status: 'sent', date: dayjs() }} requiredMark={(label, { required }) => (
+        <Form<FormValues> form={form} onFinish={handleFinish} initialValues={{ status: 'sent', date: dayjs() }} requiredMark={(label, { required }) => (
             <>
                 {label}
                 {required && <span style={{ color: token.colorError, marginLeft: 5 }}>*</span>}
@@ -65,7 +67,7 @@ function ApplicationForm({ onSubmit }: Props) {
                 <TextArea placeholder="Əlaqə şəxsi, maaş gözləntisi vəs." rows={4} />
             </Form.Item>
             <Flex gap="small" align="center" justify="flex-end">
-                <Button type="default">
+                <Button type="default" onClick={()=>form.resetFields()}>
                     Təmizlə
                 </Button>
                 <Button type="primary" htmlType="submit">
