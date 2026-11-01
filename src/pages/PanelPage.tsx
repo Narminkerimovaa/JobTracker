@@ -62,7 +62,7 @@ function PanelPage() {
           <Col md={6} xs={24}><Select style={{ width: '100%' }} value={sortOrder} onChange={(value:'newest' | 'oldest')=>setSortOrder(value)} options={sortOptions}></Select></Col>
         </Row>
       </Card>
-      <Table<Application> dataSource={sortedApplications} columns={columns} rowKey="id" tableLayout="fixed" scroll={{ x: 'max-content' }}/>
+      <Table<Application> dataSource={sortedApplications} columns={columns} rowKey="id" tableLayout="fixed"/>
       <Modal open={viewing !== null} onCancel={() => setViewing(null)} title='Müraciətin təfərrüatı' footer={null}><Descriptions column={1} bordered items={modalItems} /></Modal>
       <Modal open={editing !== null} onCancel={() => setEditing(null)} title='Müraciəti redaktə et' footer={null}>{editing === null ? null : <ApplicationForm onSubmit={handleEdit} initialData={editing} submitText="Yadda saxla" onCancel={() => setEditing(null)} />}</Modal>
     </>
