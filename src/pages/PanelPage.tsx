@@ -1,4 +1,4 @@
-import { Typography, Table, Select, Popconfirm, Button, Tag, Space, Modal, Descriptions, Row, Col, Statistic, Card } from "antd";
+import { Typography, Table, Select, Popconfirm, Button, Tag, Space, Modal, Descriptions, Row, Col, Statistic, Card, Input } from "antd";
 import { useApplicationStore } from "../store/useApplicationStore";
 import type { Application, Status } from "../types/application";
 import type { TableProps } from "antd";
@@ -34,14 +34,24 @@ function PanelPage() {
     updateApplication(editing.id, app) 
      setEditing(null)
   }
+  const sortOptions=[
+    {value:'newest', label:"Yeni → Köhnə"},
+    {value:'oldest',label:"Köhnə → Yeni"}
+  ]
 
   return (
     <>
-      <Typography.Title level={3}>Panel</Typography.Title>
       <Row gutter={[16,16]} style={{ marginBottom: 16 }}>
         <Col flex="1 1 160px"><Card><Statistic title="Cəmi" value={applications.length}/></Card></Col>
         {statusOptions.map((option)=>(<Col flex="1 1 160px" key={option.value}><Card><Statistic title={option.label} value={applications.filter((item) => item.status === option.value).length}/></Card></Col>))}
       </Row>
+      <Card style={{ marginBottom: 16 }}>
+        <Row gutter={[16, 16]}>
+          <Col md={12} xs={24}><Input placeholder="Şirkət və ya vəzifə üzrə axtar" allowClear/></Col>
+          <Col md={6} xs={24}><Select style={{ width: '100%' }} defaultValue={'all'} options={[{ value: 'all', label: 'Bütün statuslar' }, ...statusOptions]}></Select></Col>
+          <Col md={6} xs={24}><Select style={{ width: '100%' }} defaultValue={'newest'} options={sortOptions}></Select></Col>
+        </Row>
+      </Card>
       <Table<Application> dataSource={applications} columns={columns} rowKey="id" />
       <Modal open={viewing !== null} onCancel={() => setViewing(null)} title='Müraciətin təfərrüatı' footer={null}><Descriptions column={1} bordered items={modalItems} /></Modal>
       <Modal open={editing !== null} onCancel={() => setEditing(null)} title='Müraciəti redaktə et' footer={null}>{editing===null ? null : <ApplicationForm onSubmit={handleEdit} initialData={editing} submitText="Yadda saxla" onCancel={() => setEditing(null)}/>}</Modal>
