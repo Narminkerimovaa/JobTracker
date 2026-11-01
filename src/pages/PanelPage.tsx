@@ -1,15 +1,16 @@
-import { Typography, Table, Tag, Popconfirm, Button } from "antd";
+import { Typography, Table, Select, Popconfirm, Button } from "antd";
 import { useApplicationStore } from "../store/useApplicationStore";
 import type { Application, Status } from "../types/application";
 import type { TableProps } from "antd";
 import dayjs from "dayjs";
-import { statusColors, statusLabels } from "../constants/status";
+import { statusOptions } from "../constants/status";
 
 
 function PanelPage() {
   const applications = useApplicationStore((state) => state.applications)
   const removeApplication = useApplicationStore((state) => state.removeApplication)
-  const columns: TableProps<Application>['columns'] = [{ title: 'Şirkət', dataIndex: 'company' }, { title: 'Vəzifə', dataIndex: 'position' }, { title: 'Tarix', dataIndex: 'date', render: (date: string) => dayjs(date).format('DD.MM.YYYY') }, { title: 'Status', dataIndex: 'status', render: (status: Status) => <Tag color={statusColors[status]}>{statusLabels[status]}</Tag> }, { title: 'Əməliyyat', key: 'actions', render: (_, record: Application) => (<Popconfirm title='Silmək istədiyinizə əminsiniz?' onConfirm={()=>removeApplication(record.id)} okText='Bəli' cancelText='Xeyr'><Button type="link" danger>Sil</Button></Popconfirm>) }]
+  const updateStatus = useApplicationStore((state) => state.updateStatus)
+  const columns: TableProps<Application>['columns'] = [{ title: 'Şirkət', dataIndex: 'company' }, { title: 'Vəzifə', dataIndex: 'position' }, { title: 'Tarix', dataIndex: 'date', render: (date: string) => dayjs(date).format('DD.MM.YYYY') }, { title: 'Status', dataIndex: 'status', render: (status: Status, record: Application) => <Select style={{ width: 140 }} options={statusOptions} value={status} onChange={(newStatus: Status) => updateStatus(record.id, newStatus)}></Select> }, { title: 'Əməliyyat', key: 'actions', render: (_, record: Application) => (<Popconfirm title='Silmək istədiyinizə əminsiniz?' onConfirm={()=>removeApplication(record.id)} okText='Bəli' cancelText='Xeyr'><Button type="link" danger>Sil</Button></Popconfirm>) }]
 
   return (
     <div>
