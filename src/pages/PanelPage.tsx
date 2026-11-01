@@ -46,6 +46,8 @@ function PanelPage() {
     const matchesStatus = (statusFilter === 'all' || item.status === statusFilter)
     return matchesSearch && matchesStatus
   })
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest')
+  const sortedApplications = filteredApplications.sort((a,b)=>(sortOrder === 'newest' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date)))
 
   return (
     <>
@@ -57,10 +59,10 @@ function PanelPage() {
         <Row gutter={[16, 16]}>
           <Col md={12} xs={24}><Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Şirkət və ya vəzifə üzrə axtar" allowClear /></Col>
           <Col md={6} xs={24}><Select style={{ width: '100%' }} value={statusFilter} onChange={(value: Status | 'all') => setStatusFilter(value)} options={[{ value: 'all', label: 'Bütün statuslar' }, ...statusOptions]}></Select></Col>
-          <Col md={6} xs={24}><Select style={{ width: '100%' }} defaultValue={'newest'} options={sortOptions}></Select></Col>
+          <Col md={6} xs={24}><Select style={{ width: '100%' }} value={sortOrder} onChange={(value:'newest' | 'oldest')=>setSortOrder(value)} options={sortOptions}></Select></Col>
         </Row>
       </Card>
-      <Table<Application> dataSource={filteredApplications} columns={columns} rowKey="id" tableLayout="fixed"/>
+      <Table<Application> dataSource={sortedApplications} columns={columns} rowKey="id" tableLayout="fixed" scroll={{ x: 'max-content' }}/>
       <Modal open={viewing !== null} onCancel={() => setViewing(null)} title='Müraciətin təfərrüatı' footer={null}><Descriptions column={1} bordered items={modalItems} /></Modal>
       <Modal open={editing !== null} onCancel={() => setEditing(null)} title='Müraciəti redaktə et' footer={null}>{editing === null ? null : <ApplicationForm onSubmit={handleEdit} initialData={editing} submitText="Yadda saxla" onCancel={() => setEditing(null)} />}</Modal>
     </>
