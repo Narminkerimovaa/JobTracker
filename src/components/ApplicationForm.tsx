@@ -15,19 +15,22 @@ interface FormValues {
 }
 
 interface Props{
-    onSubmit: (app: Omit<Application, 'id'>)=>void, 
+    onSubmit: (app: Omit<Application, 'id'>)=>void,
+    initialData?: Application,
+    submitText?: string,
+    onCancel?: () => void 
 }
 
-function ApplicationForm({ onSubmit }: Props) {
+function ApplicationForm({ onSubmit, initialData, submitText, onCancel }: Props) {
     const { token } = theme.useToken()
     const [form] = Form.useForm<FormValues>()
 
     function handleFinish(values:FormValues){
         onSubmit({ ...values, date: values.date.format('YYYY-MM-DD')})
-        form.resetFields()
+        if (!initialData) { form.resetFields() }
     }
     return (
-        <Form<FormValues> form={form} onFinish={handleFinish} initialValues={{ status: 'sent', date: dayjs() }} requiredMark={(label, { required }) => (
+        <Form<FormValues> form={form} onFinish={handleFinish} initialValues={initialData ? {...initialData, date: dayjs(initialData.date) } : { status: 'sent', date: dayjs()}} requiredMark={(label, { required }) => (
             <>
                 {label}
                 {required && <span style={{ color: token.colorError, marginLeft: 5 }}>*</span>}
@@ -67,11 +70,11 @@ function ApplicationForm({ onSubmit }: Props) {
                 <TextArea placeholder="Əlaqə şəxsi, maaş gözləntisi vəs." rows={4} />
             </Form.Item>
             <Flex gap="small" align="center" justify="flex-end">
-                <Button type="default" onClick={()=>form.resetFields()}>
-                    Təmizlə
+                <Button type="default" onClick={onCancel ?? (() => form.resetFields())}>
+                    {onCancel ? 'Ləğv et' : 'Təmizlə'}
                 </Button>
                 <Button type="primary" htmlType="submit">
-                    Əlavə et
+                    {submitText ?? 'Əlavə et'}
                 </Button>
             </Flex>
         </Form>

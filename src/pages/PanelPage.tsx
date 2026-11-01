@@ -16,7 +16,7 @@ function PanelPage() {
   { title: 'Vəzifə', dataIndex: 'position' },
   { title: 'Tarix', dataIndex: 'date', render: (date: string) => dayjs(date).format('DD.MM.YYYY') },
   { title: 'Status', dataIndex: 'status', render: (status: Status, record: Application) => <Select style={{ width: 140 }} variant="borderless" options={tableStatusOptions} value={status} onChange={(newStatus: Status) => updateStatus(record.id, newStatus)}></Select> },
-  { title: 'Əməliyyat', key: 'actions', render: (_, record: Application) => (<Space> <Button type="link" onClick={() => setViewing(record)}>Bax</Button><Popconfirm title='Silmək istədiyinizə əminsiniz?' onConfirm={() => removeApplication(record.id)} okText='Bəli' cancelText='Xeyr'><Button type="link" danger>Sil</Button></Popconfirm></Space>) }]
+  { title: 'Əməliyyat', key: 'actions', render: (_, record: Application) => (<Space> <Button type="link" onClick={() => setViewing(record)}>Bax</Button><Button type="link" onClick={() => setViewing(record)}>Redaktə</Button><Popconfirm title='Silmək istədiyinizə əminsiniz?' onConfirm={() => removeApplication(record.id)} okText='Bəli' cancelText='Xeyr'><Button type="link" danger>Sil</Button></Popconfirm></Space>) }]
   const [viewing, setViewing] = useState<Application | null>(null)
   const modalItems= viewing ?[
     {key:'company', label:'Şirkət', children:viewing.company},
